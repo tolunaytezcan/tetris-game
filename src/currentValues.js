@@ -5,7 +5,9 @@ export const currentValues = {
   position: 4,
   rotation: 0,
   tetrominoe: getRandomTetrominoe(),
-  elements: null
+  elements: null,
+  timer: null,
+  score: 0
 };
 
 export const setValue = (key, value) => {

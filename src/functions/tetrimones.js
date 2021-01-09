@@ -1,10 +1,10 @@
 import {tetrominoes} from "../constants/tetrominoes";
 import {getCurrentValues, setValue} from "../currentValues";
-import {GRID_WIDTH} from "../constants/grid";
+import {GRID_SIZE, GRID_WIDTH} from "../constants/grid";
 
 export const getRandomTetrominoe = () =>{
     const randomNum = Math.floor(Math.random()* tetrominoes.length);
-    return tetrominoes[randomNum];
+    return tetrominoes[4];
 };
 
 export const unDraw = () => {
@@ -28,6 +28,55 @@ export const start = () => {
         setValue("position", position + GRID_WIDTH);
     }
     draw();
+    checkShouldStop();
+};
+
+export const checkShouldStop = () => {
+    const {position, rotation, tetrominoe, elements} = getCurrentValues();
+    const isLast = tetrominoe[rotation].some((index) => elements[position + index + GRID_WIDTH].classList.contains("taken"));
+    if(isLast){
+        tetrominoe[rotation].forEach((index) => elements[position+index].classList.add("taken"));
+        setValue("tetrominoe", getRandomTetrominoe());
+        setValue("position", 4);
+        draw();
+        checkScore();
+        checkIsGameOver();
+    }
+};
+
+export const checkScore = () => {
+    const {position, rotation, tetrominoe, elements, timer, score} = getCurrentValues();
+    for(let currentIndex= 0; currentIndex < GRID_SIZE -1; currentIndex += GRID_WIDTH){
+        const row = [currentIndex, currentIndex + 1, currentIndex + 2, currentIndex + 3, currentIndex + 4, currentIndex + 5, currentIndex + 6, currentIndex + 7, currentIndex + 8, currentIndex + 9];
+        console.log("Row", row);
+        if(row.every(index => elements[index].classList.contains("taken"))){
+            console.log("Hepsi taken", row);
+            const currentScore = score + 10;
+            setValue("score", currentScore);
+            document.getElementById("score").innerHTML= `Score: ${currentScore}`;
+            row.forEach((index) => {
+                elements[index].classList.remove("taken");
+                elements[index].classList.remove("filled");
+            });
+            const removedElements = elements.splice(currentIndex, GRID_WIDTH);
+            console.log(removedElements);
+            const newEls = removedElements.concat(elements);
+            console.log(newEls);
+            setValue("elements", newEls);
+            newEls.forEach(cell => document.querySelector("#tetris-grid").appendChild(cell));
+        }
+    }
+};
+
+export const checkIsGameOver = () => {
+    const {position, rotation, tetrominoe, elements, timer} = getCurrentValues();
+    if(tetrominoe[rotation].some((index) => {
+        return elements[position + index].classList.contains("taken")
+    })){
+        // GAME OVER
+        clearInterval(timer);
+        document.getElementById("score").innerHTML = "GAME OVER!"
+    }
 };
 
 export const moveLeft = () => {
@@ -38,7 +87,6 @@ export const moveLeft = () => {
         setValue("position", position -1);
     }
     draw();
-
 };
 
 export const moveRight = () => {

@@ -13,6 +13,7 @@ document.querySelector("#start-button").addEventListener("click", () => {
     const startTetrisInterval = () => {
         start();
     };
-    const timer = setInterval(startTetrisInterval, 1000);
+    const timer = setInterval(startTetrisInterval, 800);
+    setValue("timer", timer);
     bindEvents();
 });

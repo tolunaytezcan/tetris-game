@@ -1,4 +1,4 @@
-import {GRID_SIZE} from "../constants/grid";
+import {GRID_SIZE, GRID_WIDTH} from "../constants/grid";
 
 const $tetrisRootElement = document.querySelector("#tetris-grid");
 
@@ -7,6 +7,12 @@ export const createGrid = () => {
         const singLeBlock = document.createElement("div");
         singLeBlock.classList.add("tetris-grid-item");
         $tetrisRootElement.appendChild(singLeBlock)
+    }
+    for(let j = 0; j< GRID_WIDTH; j++){
+        const extraBlock = document.createElement("div");
+        extraBlock.classList.add("tetris-grid-item");
+        extraBlock.classList.add("taken");
+        $tetrisRootElement.appendChild(extraBlock);
     }
     return Array.from(document.querySelectorAll(".tetris-grid-item"));
 };
