@@ -1,0 +1,21 @@
+* {
+    box-sizing: border-box;
+}
+
+#tetris-grid {
+    width: 300px;
+    height: 600px;
+    margin: 100px auto;
+}
+
+.tetris-grid-item {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.tetris-grid-item.filled {
+    background: rebeccapurple;
+}
