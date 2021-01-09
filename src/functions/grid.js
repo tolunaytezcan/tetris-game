@@ -10,3 +10,5 @@ export const createGrid = () => {
     }
     return Array.from(document.querySelectorAll(".tetris-grid-item"));
 };
+
+export const elements = createGrid();
