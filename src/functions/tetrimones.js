@@ -69,12 +69,13 @@ export const checkScore = () => {
 };
 
 export const checkIsGameOver = () => {
-    const {position, rotation, tetrominoe, elements, timer} = getCurrentValues();
+    const {position, rotation, tetrominoe, elements, timer, score} = getCurrentValues();
     if(tetrominoe[rotation].some((index) => {
         return elements[position + index].classList.contains("taken")
     })){
         // GAME OVER
         clearInterval(timer);
+        checkHighestScore(score);
         document.getElementById("score").innerHTML = "GAME OVER!"
     }
 };
@@ -114,10 +115,6 @@ export const bindEvents = () => {
     document.addEventListener("keyup", (e) => {
         handleControls(e);
     });
-    document.querySelector("#pause-button").addEventListener("click", () => {
-        const {timer} = getCurrentValues();
-        clearInterval(timer);
-    });
 };
 
 export const handleControls = (e) => {
@@ -135,3 +132,15 @@ export const handleControls = (e) => {
   }
 };
 
+export const checkHighestScore = (currentScore) => {
+    const highestScore = window.localStorage.getItem("highestScore");
+    if(highestScore){
+        if(currentScore > highestScore){
+            window.localStorage.setItem("highestScore", currentScore);
+        }
+        document.querySelector("#highest-score").innerHTML = window.localStorage.getItem("highestScore");
+    }else{
+        window.localStorage.setItem("highestScore", currentScore);
+        document.querySelector("#highest-score").innerHTML = currentScore;
+    }
+};

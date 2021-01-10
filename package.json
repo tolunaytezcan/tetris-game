@@ -30,5 +30,8 @@
     "webpack": "^5.12.1",
     "webpack-cli": "^4.3.1",
     "webpack-dev-server": "^3.11.1"
+  },
+  "dependencies": {
+    "alertify": "^0.3.0"
   }
 }

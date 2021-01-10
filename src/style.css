@@ -47,3 +47,18 @@
     text-align: center;
     font-size: 32px;
 }
+
+#user {
+    text-align: center;
+    font-size: 24px;
+}
+
+#highest-scores {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 200px;
+    padding:10px;
+    height: 200px;
+    background: gray;
+}
