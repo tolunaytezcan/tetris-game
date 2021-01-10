@@ -46,10 +46,12 @@ export const checkShouldStop = () => {
 
 export const checkScore = () => {
     const {position, rotation, tetrominoe, elements, timer, score} = getCurrentValues();
-    for(let currentIndex= 0; currentIndex < GRID_SIZE -1; currentIndex += GRID_WIDTH){
+    for(let currentIndex = 0; currentIndex < GRID_SIZE - 1; currentIndex += GRID_WIDTH){
         const row = [currentIndex, currentIndex + 1, currentIndex + 2, currentIndex + 3, currentIndex + 4, currentIndex + 5, currentIndex + 6, currentIndex + 7, currentIndex + 8, currentIndex + 9];
-        console.log("Row", row);
-        if(row.every(index => elements[index].classList.contains("taken"))){
+        // 0 - row - 0 , 1, ,2 ,3 ..
+        // 10 - row- 10, 11 , 12
+        const isWall = row.some(index => elements[index].classList.contains("wall"));
+        if(row.every(index => elements[index].classList.contains("taken")) && !isWall){
             console.log("Hepsi taken", row);
             const currentScore = score + 10;
             setValue("score", currentScore);
@@ -59,9 +61,7 @@ export const checkScore = () => {
                 elements[index].classList.remove("filled");
             });
             const removedElements = elements.splice(currentIndex, GRID_WIDTH);
-            console.log(removedElements);
             const newEls = removedElements.concat(elements);
-            console.log(newEls);
             setValue("elements", newEls);
             newEls.forEach(cell => document.querySelector("#tetris-grid").appendChild(cell));
         }
@@ -78,6 +78,7 @@ export const checkIsGameOver = () => {
         document.getElementById("score").innerHTML = "GAME OVER!"
     }
 };
+
 
 export const moveLeft = () => {
     const {tetrominoe, rotation, position, elements} = getCurrentValues();
@@ -112,7 +113,11 @@ export const rotate = () => {
 export const bindEvents = () => {
     document.addEventListener("keyup", (e) => {
         handleControls(e);
-    })
+    });
+    document.querySelector("#pause-button").addEventListener("click", () => {
+        const {timer} = getCurrentValues();
+        clearInterval(timer);
+    });
 };
 
 export const handleControls = (e) => {
@@ -129,3 +134,4 @@ export const handleControls = (e) => {
       start();
   }
 };
+

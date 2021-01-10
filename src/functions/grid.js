@@ -12,6 +12,7 @@ export const createGrid = () => {
         const extraBlock = document.createElement("div");
         extraBlock.classList.add("tetris-grid-item");
         extraBlock.classList.add("taken");
+        extraBlock.classList.add("wall");
         $tetrisRootElement.appendChild(extraBlock);
     }
     return Array.from(document.querySelectorAll(".tetris-grid-item"));
